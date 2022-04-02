@@ -71,6 +71,6 @@ jobs:
         with:
           name: $ApplicationArtifact
 
-      - name: Docker login
+      #- name: Docker login
 
-      - name: Docker build
+      #- name: Docker build
