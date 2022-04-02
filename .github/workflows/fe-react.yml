@@ -20,11 +20,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: "NodeJS $NODE_VERSION"
+      - name: "NodeJS $env:NODE_VERSION"
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: "npm"
+          cache: npm
 
       - name: NPM install
         run: npm install
@@ -43,11 +43,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: "NodeJS $NODE_VERSION"
+      - name: "NodeJS $env:NODE_VERSION"
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+          cache: npm
 
       - name: NPM install
         run: npm install
