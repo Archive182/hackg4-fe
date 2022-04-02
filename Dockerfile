@@ -5,14 +5,14 @@ WORKDIR /app
 COPY . ./
 
 RUN npm install
-RUN npm build
+RUN npm run build
 
 # server environment
 FROM nginx:alpine
 
 ENV NGINX=/etc/nginx/conf.d
 
-COPY ngxin ${NGINX}
+COPY nginx ${NGINX}
 COPY nginx.conf ${NGINX}/configfile.template
 COPY --from=react-build /app/build /usr/share/nginx/html
 
