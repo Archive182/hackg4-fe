@@ -62,7 +62,7 @@ jobs:
           path: build
 
   Deploy:
-    if: github.ref.name == main
+    if: github.ref.name == "main"
     needs: [Test, Build]
     runs-on: ubuntu-latest
 
