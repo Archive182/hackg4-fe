@@ -20,10 +20,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: NodeJS $NodeVersion
+      - name: 'NodeJS $NodeVersion'
         uses: actions/setup-node@v3
         with:
-          node-version: $NodeVersion
+          node-version: ${{ env.NodeVersion }}
           cache: 'npm'
 
       - name: NPM install
@@ -35,18 +35,18 @@ jobs:
       - name: Upload coverage artifact
         uses: actions/upload-artifact@v2
         with:
-          name: $TestCoverageArtifact
-          path: coverage/
+          name: ${{ env.TestCoverageArtifact }}
+          path: coverage
 
   Build:
     needs: Test
     runs-on: ubuntu-latest
 
     steps:
-      - name: NodeJS $NodeVersion
+      - name: 'NodeJS $NodeVersion'
         uses: actions/setup-node@v3
         with:
-          node-version: $NodeVersion
+          node-version: ${{ env.NodeVersion }}
           cache: 'npm'
 
       - name: NPM install
@@ -58,7 +58,7 @@ jobs:
       - name: Upload application artifact
         uses: actions/upload-artifact@v2
         with:
-          name: $ApplicationArtifact
+          name: ${{ env.ApplicationArtifact }}
           path: build
 
   Deploy:
@@ -69,7 +69,7 @@ jobs:
       - name: Download application artifact
         uses: actions/download-artifact@v2
         with:
-          name: $ApplicationArtifact
+          name: ${{ env.ApplicationArtifact }}
 
       #- name: Docker login
 
