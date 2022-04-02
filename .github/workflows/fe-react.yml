@@ -1,17 +1,17 @@
 name: Frontend ReactJS
 
+on:
+  push:
+    branches:
+      - 'feature/[0-9]+-*'
+  pull_request:
+    branches:
+      - main
+
 env:
   NODE_VERSION: 16.x
   ARTIFACT_APP: application-artifact
   ARTIFACT_COVERAGE: coverage-artifact
-
-on:
-  push:
-    branches:
-      - "feature/[0-9]+-*"
-  pull_request:
-    branches:
-      - main
 
 jobs:
   Test:
@@ -25,7 +25,8 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          
+          registry-url: 'https://registry.npmjs.org'
+
       - run: npm ci
 
       - name: Coverage
@@ -47,6 +48,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
+          registry-url: 'https://registry.npmjs.org'
 
       - run: npm ci
 
