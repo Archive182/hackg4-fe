@@ -1,0 +1,8 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+echo "##### Test coverage"
+npm run coverage
+
+echo "##### Test build"
+npm run build

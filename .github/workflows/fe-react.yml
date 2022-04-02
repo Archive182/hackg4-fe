@@ -1,0 +1,51 @@
+name: Frontend ReactJS
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  Deploy:
+    # Add 'id-token' with the intended permissions for workload identity federation
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # NOTE: Alternative option - authentication via credentials json
+      - name: Google Auth
+        id: auth
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+
+      - name: Docker Login
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+        run: |
+          echo '${{ secrets.GCP_CREDENTIALS }}' > key.json
+          cat key.json | docker login -u _json_key --password-stdin https://us-east1-docker.pkg.dev/
+
+      - name: Build and Push Container
+        run: |
+          docker build -t ${{ secrets.GAR_LOCATION }}/frontend:latest .
+          docker push ${{ secrets.GAR_LOCATION }}/frontend:latest
+
+      - name: Deploy to Cloud Run
+        id: deploy
+        uses: google-github-actions/deploy-cloudrun@v0
+        with:
+          service: ${{ secrets.SERVICE }}
+          region: ${{ secrets.REGION }}
+          # NOTE: If using a pre-built image, update the image name here
+          image: ${{ secrets.GAR_LOCATION }}/frontend:latest
+
+      # If required, use the Cloud Run url output in later steps
+      - name: Show Output
+        run: echo ${{ steps.deploy.outputs.url }}
