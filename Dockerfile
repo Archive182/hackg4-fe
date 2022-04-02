@@ -12,7 +12,6 @@ FROM nginx:alpine
 
 ENV NGINX=/etc/nginx/conf.d
 
-COPY nginx ${NGINX}
 COPY nginx.conf ${NGINX}/configfile.template
 COPY --from=react-build /app/build /usr/share/nginx/html
 
