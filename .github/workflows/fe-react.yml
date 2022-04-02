@@ -20,15 +20,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: NodeJS
+      - name: Use Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
-          registry-url: "https://registry.npmjs.org/"
-          cache: npm
-
-      - name: NPM install
-        run: npm install
+          cache: 'npm'
+          
+      - run: npm ci
 
       - name: Coverage
         run: npm run coverage
@@ -44,15 +42,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: NodeJS
+      - name: Use Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
-          registry-url: "https://registry.npmjs.org/"
-          cache: npm
+          cache: 'npm'
 
-      - name: NPM install
-        run: npm install
+      - run: npm ci
 
       - name: Build app
         run: npm run build
