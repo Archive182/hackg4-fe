@@ -1,14 +1,14 @@
 name: Frontend ReactJS
 
 env:
-  NodeVersion: '16.x'
+  NodeVersion: 16.x
   ApplicationArtifact: application-artifact
   TestCoverageArtifact: coverage-artifact
 
 on:
   push:
     branches:
-      - 'feature/[0-9]+-.*'
+      - "feature/[0-9]+-*"
   pull_request:
     branches:
       - main
@@ -20,11 +20,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: 'NodeJS $NodeVersion'
+      - name: "NodeJS $NodeVersion"
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NodeVersion }}
-          cache: 'npm'
+          cache: "npm"
 
       - name: NPM install
         run: npm ci
@@ -43,7 +43,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 'NodeJS $NodeVersion'
+      - name: "NodeJS $NodeVersion"
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NodeVersion }}
@@ -62,6 +62,7 @@ jobs:
           path: build
 
   Deploy:
+    if: ${{ GITHUB_REF_NAME == main }}
     needs: [Test, Build]
     runs-on: ubuntu-latest
 
