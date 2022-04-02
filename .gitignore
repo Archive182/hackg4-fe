@@ -1,5 +1,8 @@
-# Folders
+## Folders
 
 node_modules
 build
 coverage
+
+## Files
+package-lock.json
