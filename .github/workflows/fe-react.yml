@@ -1,0 +1,76 @@
+name: Frontend ReactJS
+
+env:
+  NodeVersion: '16.x'
+  ApplicationArtifact: application-artifact
+  TestCoverageArtifact: coverage-artifact
+
+on:
+  push:
+    branches:
+      - 'feature/[0-9]+-.*'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  Test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: NodeJS $NodeVersion
+        uses: actions/setup-node@v3
+        with:
+          node-version: $NodeVersion
+          cache: 'npm'
+
+      - name: NPM install
+        run: npm ci
+
+      - name: Coverage
+        run: npm run coverage
+
+      - name: Upload coverage artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: $TestCoverageArtifact
+          path: coverage/
+
+  Build:
+    needs: Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: NodeJS $NodeVersion
+        uses: actions/setup-node@v3
+        with:
+          node-version: $NodeVersion
+          cache: 'npm'
+
+      - name: NPM install
+        run: npm ci
+
+      - name: Build app
+        run: npm run build
+
+      - name: Upload application artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: $ApplicationArtifact
+          path: build
+
+  Deploy:
+    needs: [Test, Build]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download application artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: $ApplicationArtifact
+
+      - name: Docker login
+
+      - name: Docker build

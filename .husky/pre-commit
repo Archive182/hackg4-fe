@@ -1,0 +1,8 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+echo "##### Format code"
+npm run format
+
+echo "##### Lint fix"
+npm run lintFix
