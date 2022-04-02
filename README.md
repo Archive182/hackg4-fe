@@ -11,7 +11,7 @@
 - Running tests for frontend
   `npm test` starts tests using jest, @testing-library is also used for rendering components.
 
----
+------
 
 ## Installing new packages
 
